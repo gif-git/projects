@@ -1,0 +1,43 @@
+My first project
+
+my first project in apache 
+wish to creat a share folder in http help of apache web server
+
+step 1:
+install apache2
+# sudo apt-get install apache2
+
+step 2:
+make a copy of the file and create a new file #in my case my file will be 000-default.conf
+# sudo su -
+# cd /etc/apache2/sites-available/
+# mv 000-default.config 000-dafault.config-bkp
+# vim 000-default.config
+<VirtualHost *:80>
+	
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/html
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+#### added for folder protection with passowrd 12june2021## 
+<Directory /var/www/html/>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+ </Directory>
+####
+
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+
+step 3:
+this command will 
+sudo service apache2 restart
+
+
+usefull websites:
+https://www.joeswebtools.com/security/htpasswd-generator/ # This site will generate a password encrypt
