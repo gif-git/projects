@@ -35,9 +35,58 @@ make a copy of the file and create a new file #in my case my file will be 000-de
 # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
 
 step 3:
-this command will 
-sudo service apache2 restart
+this command will restart the apache configuration: 
+#sudo service apache2 restart
+
+step 4:
+create a .htaccess file in following path:
+# cd /var/www/html/
+# vim .htaccess
+AuthUserFile /usr/local/username/safedirectory/.htpasswd # keep the file in safe path
+AuthGroupFile /dev/null
+AuthName "Please Enter Password"
+AuthType Basic
+Require valid-user
+
+step 5:
+vim /usr/local/username/safedirectory/.htpasswd
+devops:myJU6c.qcLgSg
+
+to encript the password use the following site:
+http://www.joeswebtools.com/security/htpasswd-generator/
+after generating the password save it in .htpasswd file
+
+make sure the .htpasswd file own should be like following:
+-rw--------   1 www-data gif         21 Jun 12 07:08 .htpasswd
+
+if not change the owner with www-data
+# chown 600 /usr/local/username/safedirectory/.htpasswd
+ 
+step 6:
+need to enable following module,
+following command will check the status of the module enable or not
+#apachectl -M | grep "authz_groupfile"
+#apachectl -M | grep "rewrite"
+
+to enable the module
+#sudo a2enmod rewrite
+#sudo a2enmod authz_groupfile
+
+#sudo service apache2 restart
+
+
 
 
 usefull websites:
+
+how to use the .htaccess file
+https://www.digitalocean.com/community/tutorials/how-to-use-the-htaccess-file
+
+to htpasswd generator:
 https://www.joeswebtools.com/security/htpasswd-generator/ # This site will generate a password encrypt
+
+Error we faced on tail -f /var/log/apache/error.log:
+Invalid command 'AuthGroupFile', perhaps misspelled or defined by a module not included in the server configuration
+https://askubuntu.com/questions/522519/htaccess-error-invalid-command-authgroupfile
+
+
